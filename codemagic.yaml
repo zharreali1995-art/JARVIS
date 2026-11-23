@@ -1,0 +1,24 @@
+workflows:
+  android-apk:
+    name: Jarvis Android APK
+    max_build_duration: 60
+    instance_type: linux_x2
+
+    environment:
+      flutter: stable
+
+    scripts:
+      - name: Extract project ZIP
+        script: |
+          mkdir extracted
+          unzip -q Jarvis-master.zip -d extracted
+          find extracted -name pubspec.yaml
+
+      - name: Build APK
+        script: |
+          cd extracted/Jarvis-master
+          flutter pub get
+          flutter build apk --debug
+
+    artifacts:
+      - extracted/Jarvis-master/build/app/outputs/flutter-apk/*.apk
